@@ -1,8 +1,9 @@
 import axios from "axios";
 // let url = "http://localhost:3001";
-let url = "https://amztownbackend.herokuapp.com/";
+let url = "https://amztownbackend.herokuapp.com";
 
 const signin = async (data) => {
+  console.log(data);
   let response;
   response = await axios.post(`${url}/api/users/login`, data);
 
