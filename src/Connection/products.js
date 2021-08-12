@@ -3,7 +3,9 @@ import axios from "axios";
 
 const getApiKey = async (data) => {
   let response;
-  response = await axios.get(`http://localhost:3001/api/apikey/`);
+  response = await axios.get(
+    `https://amztownbackend.herokuapp.com/api/apikey/`
+  );
 
   console.log(response, "i am response");
   return response.data.apiKey[0].apiKey;
