@@ -34,15 +34,13 @@ const Search = ({ location }) => {
     console.log(searchValue);
 
     const regions = [
-      "amazon.com",
-      "amazon.ca",
       "amazon.de",
       "amazon.fr",
       "amazon.se",
       "amazon.es",
       "amazon.pl",
-      "amazon.co.uk",
-      "amazon.com.au",
+      "amazon.uk",
+      "amazon.nl",
       "amazon.it",
       "amazon.pl",
     ];
@@ -51,36 +49,25 @@ const Search = ({ location }) => {
 
     function yoo() {
       console.log(regions[i]);
-      setLoading(`Getting Results From ${regions[i]}`);
+      setLoading(`Getting Results From ${i < 8 ? regions[i] : "amazon.pl"}`);
       console.log(i);
-      i < 10 ? i++ : (i = 10);
+      i++;
     }
 
-    let interval = setInterval(yoo, 3000);
+    let interval = setInterval(yoo, 5000);
     let res = await getSearch({ searchValue: searchValue });
     console.log(res);
     if (res) {
       clearInterval(interval);
       history.push({
         pathname: "/search",
-        state: { data: res },
+        state: { data: res.amazondotuk },
       });
       setLoading("search");
     }
   };
 
-  const [amazondotuk, setAmazondotuk] = useState();
-  const [amazondotes, setAmazondotes] = useState();
-  const [amazondotfr, setAmazondotfr] = useState();
-
-  const [amazondotde, setAmazondotde] = useState();
-
-  const [amazondotit, setAmazondotit] = useState();
-
-  const [amazondotse, setAmazondotse] = useState();
-
-  const [amazondotpl, setAmazondotpl] = useState();
-  const [amazondotnl, setAmazondotnl] = useState();
+  const [codes, setCodes] = useState();
 
   useEffect(() => {
     setResults(location.state.data);
@@ -91,14 +78,24 @@ const Search = ({ location }) => {
       let res = await getCodes();
       console.log(res, "hello g");
       let codes = res.data.codes;
-      setAmazondotuk(codes[0].code);
-      setAmazondotes(codes[1].code);
-      setAmazondotfr(codes[2].code);
-      setAmazondotde(codes[3].code);
-      setAmazondotit(codes[4].code);
-      setAmazondotse(codes[5].code);
-      setAmazondotpl(codes[6].code);
-      setAmazondotnl(codes[7].code);
+      setCodes({
+        amazondotuk: codes[0],
+        amazondotes: codes[1],
+        amazondotfr: codes[2],
+        amazondotde: codes[3],
+        amazondotit: codes[4],
+        amazondotse: codes[5],
+        amazondotpl: codes[6],
+        amazondotnl: codes[7],
+      });
+      // setAmazondotuk(codes[0].code);
+      // setAmazondotes(codes[1].code);
+      // setAmazondotfr(codes[2].code);
+      // setAmazondotde(codes[3].code);
+      // setAmazondotit(codes[4].code);
+      // setAmazondotse(codes[5].code);
+      // setAmazondotpl(codes[6].code);
+      // setAmazondotnl(codes[7].code);
     };
     fetchCodes();
   }, []);
@@ -153,195 +150,32 @@ const Search = ({ location }) => {
       <br />
       <br />
 
-      <div className="container">
-        <div className="row">
-          <div className="col-12 text-center">
-            <h3
-              style={{
-                fontSize: "45px",
-                // textDecoration: "underline",
-                // textDecorationColor: "orange",
-              }}
-              className="searchheading"
-            >
-              {" "}
-              Results From Amazon.com
-            </h3>
-            <br />
-            <br />
-            <br />
-            {results && (
-              <Slider products={results.amazondotcom} code={amazondotuk} />
-            )}
+      <div className="container text-center">
+        {/* <h3
+          style={{
+            fontSize: "45px",
+            // textDecoration: "underline",
+            // textDecorationColor: "orange",
+          }}
+          className="searchheading"
+        >
+          {" "}
+          Results From Amazon.com
+        </h3> */}
+        <br />
+        <br />
+        <br />
+        {results && (
+          <div className="row">
+            {results.map((result) => {
+              return (
+                <div className="col-12 col-md-6 col-lg-4 col-xl-3 text-center mb-5">
+                  <Card data={result} codes={codes} />
+                </div>
+              );
+            })}
           </div>
-          {/* <br />
-          <br />
-          <br />
-          <br />
-          <div className="col-12 text-center">
-            <br />
-            <br />
-            <br />
-            <br />
-            <h3 style={{ fontSize: "45px" }}>Results From Amazon.ca</h3>
-            <br />
-            <br />
-            <br />
-            {results && <Slider products={results.amazondotca} />}
-          </div> */}
-          <br />
-          <br />
-          <br />
-          <br />
-          <div className="col-12 text-center">
-            <br />
-            <br />
-            <br />
-            <br />
-            <h3 className="searchheading" style={{ fontSize: "45px" }}>
-              Results From Amazon.co.uk
-            </h3>
-            <br />
-            <br />
-            <br />
-            {results && (
-              <Slider products={results.amazondotuk} code={amazondotuk} />
-            )}
-          </div>
-          <br />
-          <br />
-          <br />
-          <br />
-          <div className="col-12 text-center">
-            <br />
-            <br />
-            <br />
-            <br />
-            <h3 className="searchheading" style={{ fontSize: "45px" }}>
-              Results From Amazon.nl
-            </h3>
-            <br />
-            <br />
-            <br />
-            {results && (
-              <Slider products={results.amazondotnl} code={amazondotnl} />
-            )}
-          </div>
-          <br />
-          <br />
-          <br />
-          <br />
-          <div className="col-12 text-center">
-            <br />
-            <br />
-            <br />
-            <br />
-            <h3 className="searchheading" style={{ fontSize: "45px" }}>
-              Results From Amazon.de
-            </h3>
-            <br />
-            <br />
-            <br />
-            {results && (
-              <Slider products={results.amazondotde} code={amazondotde} />
-            )}
-          </div>
-          <br />
-          <br />
-          <br />
-          <br />
-          <div className="searchheading" className="col-12 text-center">
-            <br />
-            <br />
-            <br />
-            <br />
-            <h3 className="searchheading" style={{ fontSize: "45px" }}>
-              Results From Amazon.es
-            </h3>
-            <br />
-            <br />
-            <br />
-            {results && (
-              <Slider products={results.amazondotes} code={amazondotes} />
-            )}
-          </div>
-          <br />
-          <br />
-          <br />
-          <br />
-          <div className="col-12 text-center">
-            <br />
-            <br />
-            <br />
-            <br />
-            <h3 className="searchheading" style={{ fontSize: "45px" }}>
-              Results From Amazon.fr
-            </h3>
-            <br />
-            <br />
-            <br />
-            {results && (
-              <Slider products={results.amazondotfr} code={amazondotfr} />
-            )}
-          </div>
-          <br />
-          <br />
-          <br />
-          <br />
-          <div className="col-12 text-center">
-            <br />
-            <br />
-            <br />
-            <br />
-            <h3 className="searchheading" style={{ fontSize: "45px" }}>
-              Results From Amazon.se
-            </h3>
-            <br />
-            <br />
-            <br />
-            {results && (
-              <Slider products={results.amazondotse} code={amazondotse} />
-            )}
-          </div>
-          <br />
-          <br />
-          <br />
-          <br />
-          <div className="col-12 text-center">
-            <br />
-            <br />
-            <br />
-            <br />
-            <h3 className="searchheading" style={{ fontSize: "45px" }}>
-              Results From Amazon.pl
-            </h3>
-            <br />
-            <br />
-            <br />
-            {results && (
-              <Slider products={results.amazondotpl} code={amazondotpl} />
-            )}
-          </div>
-          <br />
-          <br />
-          <br />
-          <br />
-          <div className="col-12 text-center">
-            <br />
-            <br />
-            <br />
-            <br />
-            <h3 className="searchheading" style={{ fontSize: "45px" }}>
-              Results From Amazon.it
-            </h3>
-            <br />
-            <br />
-            <br />
-            {results && (
-              <Slider products={results.amazondotit} code={amazondotit} />
-            )}
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

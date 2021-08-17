@@ -22,13 +22,12 @@ const Home = () => {
     console.log(searchValue);
 
     const regions = [
-      "amazon.com",
       "amazon.de",
       "amazon.fr",
       "amazon.se",
       "amazon.es",
       "amazon.pl",
-      "amazon.co.uk",
+      "amazon.uk",
       "amazon.nl",
       "amazon.it",
       "amazon.pl",
@@ -38,19 +37,19 @@ const Home = () => {
 
     function yoo() {
       console.log(regions[i]);
-      setLoading(`Getting Results From ${regions[i]}`);
+      setLoading(`Getting Results From ${i < 8 ? regions[i] : "amazon.pl"}`);
       console.log(i);
-      i < 9 ? i++ : (i = 9);
+      i++;
     }
 
-    let interval = setInterval(yoo, 2000);
+    let interval = setInterval(yoo, 5000);
     let res = await getSearch({ searchValue: searchValue });
     console.log(res);
     if (res) {
       clearInterval(interval);
       history.push({
         pathname: "/search",
-        state: { data: res },
+        state: { data: res.amazondotuk },
       });
     }
   };
