@@ -20,7 +20,7 @@ const Card = ({ data, codes, rate }) => {
         className="card-img-top p-3 img-fluid  "
         alt="..."
       />
-      {console.log(Number(rate), "I am code")}
+      {console.log(data.price?.value * Number(rate), "I am code")}
       <div class="card-body">
         <h4 style={{ fontWeight: "bold" }} class="card-title">
           {" "}
@@ -43,7 +43,7 @@ const Card = ({ data, codes, rate }) => {
 
             <div className="col-6">
               {/* <Converter /> */}
-              {data.price?.value * Number(rate)} EUR
+              {data.price?.value * Number(rate).toString().split(".")[0]} EUR
               {/* <CurrencyConverter from={"USD"} to={"CAD"} value={29} /> */}
               {/* {currencyConverter
                 .from("GBP")
