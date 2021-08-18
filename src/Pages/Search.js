@@ -6,6 +6,7 @@ import Slider from "../Components/Slider";
 import { useHistory } from "react-router-dom";
 import { getBestSellers, getSearch } from "../Connection/products";
 import { getCodes } from "../Connection/auth";
+import { useAuth } from "../Contexts/Auth-Context";
 
 import "../Styles/Search.css";
 
@@ -14,6 +15,7 @@ const Search = ({ location }) => {
   const [results, setResults] = useState("");
   const history = useHistory();
   const [loading, setLoading] = useState("Search");
+  const { gbpRate } = useAuth();
 
   const handleSearchValueChange = async (evt) => {
     console.log(evt.target.value);
@@ -36,13 +38,9 @@ const Search = ({ location }) => {
     const regions = [
       "amazon.de",
       "amazon.fr",
-      "amazon.se",
       "amazon.es",
-      "amazon.pl",
       "amazon.uk",
-      "amazon.nl",
       "amazon.it",
-      "amazon.pl",
     ];
 
     let i = 0;
@@ -88,20 +86,12 @@ const Search = ({ location }) => {
         amazondotpl: codes[6],
         amazondotnl: codes[7],
       });
-      // setAmazondotuk(codes[0].code);
-      // setAmazondotes(codes[1].code);
-      // setAmazondotfr(codes[2].code);
-      // setAmazondotde(codes[3].code);
-      // setAmazondotit(codes[4].code);
-      // setAmazondotse(codes[5].code);
-      // setAmazondotpl(codes[6].code);
-      // setAmazondotnl(codes[7].code);
     };
     fetchCodes();
   }, []);
   return (
     <div>
-      {console.log(location.state)}
+      {console.log(gbpRate)}
       <div className="container">
         <br />
         <br />
@@ -170,7 +160,11 @@ const Search = ({ location }) => {
             {results.map((result) => {
               return (
                 <div className="col-12 col-md-6 col-lg-4 col-xl-3 text-center mb-5">
-                  <Card data={result} codes={codes} />
+                  <Card
+                    data={result}
+                    codes={codes}
+                    rate={gbpRate.toString().slice(0, 4)}
+                  />
                 </div>
               );
             })}

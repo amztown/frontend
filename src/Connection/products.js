@@ -38,10 +38,7 @@ const getSearch = async (data) => {
   let amazondotfr = [];
   let amazondotde = [];
   let amazondotit = [];
-  let amazondotpl = [];
   let amazondotes = [];
-  let amazondotse = [];
-  let amazondotnl = [];
 
   const getAmazondotcom = async () => {
     const params = {
@@ -88,10 +85,11 @@ const getSearch = async (data) => {
       frResults = await getAmazondotfr(asin);
       deResults = await getAmazondotde(asin);
       itResults = await getAmazondotit(asin);
-      plResults = await getAmazondotpl(asin);
-      seResults = await getAmazondotse(asin);
       esResults = await getAmazondotes(asin);
-      nlResults = await getAmazondotnl(asin);
+      // plResults = await getAmazondotpl(asin);
+      // seResults = await getAmazondotse(asin);
+
+      // nlResults = await getAmazondotnl(asin);
       if (asinsLength === i + 1) {
         console.log("i am running");
         res.data.search_results.map((prod, i) => {
@@ -120,19 +118,7 @@ const getSearch = async (data) => {
             }
           });
         });
-        res.data.search_results.map((prod, i) => {
-          deResults.map((prodde) => {
-            if (prod.asin === prodde.asin) {
-              ukResults[i] = {
-                ...prod,
-                amazondotde: {
-                  link: prodde.link,
-                  price: prodde.buybox_winner.price,
-                },
-              };
-            }
-          });
-        });
+
         res.data.search_results.map((prod, i) => {
           itResults?.map((prodit) => {
             if (prod.asin === prodit.asin) {
@@ -146,32 +132,7 @@ const getSearch = async (data) => {
             }
           });
         });
-        res.data.search_results.map((prod, i) => {
-          plResults.map((prodpl) => {
-            if (prod.asin === prodpl.asin) {
-              ukResults[i] = {
-                ...prod,
-                amazondotpl: {
-                  link: prodpl.link,
-                  price: prodpl.buybox_winner.price,
-                },
-              };
-            }
-          });
-        });
-        res.data.search_results.map((prod, i) => {
-          seResults.map((prodse) => {
-            if (prod.asin === prodse.asin) {
-              ukResults[i] = {
-                ...prod,
-                amazondotse: {
-                  link: prodse.link,
-                  price: prodse.buybox_winner.price,
-                },
-              };
-            }
-          });
-        });
+
         res.data.search_results.map((prod, i) => {
           esResults.map((prodes) => {
             if (prod.asin === prodes.asin) {
@@ -180,19 +141,6 @@ const getSearch = async (data) => {
                 amazondotes: {
                   link: prodes.link,
                   price: prodes.buybox_winner.price,
-                },
-              };
-            }
-          });
-        });
-        res.data.search_results.map((prod, i) => {
-          nlResults.map((prodnl) => {
-            if (prod.asin === prodnl.asin) {
-              ukResults[i] = {
-                ...prod,
-                amazondotnl: {
-                  link: prodnl.link,
-                  price: prodnl.buybox_winner.price,
                 },
               };
             }
@@ -207,6 +155,83 @@ const getSearch = async (data) => {
     console.log(finalResults);
     return finalResults[asinsLength - 1];
   };
+
+  // const getAmazondotuk = async () => {
+  //   const params = {
+  //     api_key: apiKey,
+  //     type: "search",
+  //     amazon_domain: "amazon.co.uk",
+  //     search_term: searchValue,
+  //     sort_by: "price_high_to_low",
+  //   };
+
+  //   let res = await axios.get("https://api.rainforestapi.com/request", {
+  //     params,
+  //   });
+
+  //   console.log(res.data);
+  //   res.data.search_results.map((res) => {
+  //     asins.push(res.asin);
+  //   });
+
+  //   console.log(asins);
+
+  //   let frResults;
+  //   let deResults, itResults, plResults, seResults, esResults, nlResults;
+  //   let ukResults = res.data.search_results;
+  //   let newArr = [];
+  //   let asinsLength = asins.length;
+
+  //   let finalResults = await asins.map(async (asin, i) => {
+  //     let frResults = await getAmazondotfr(asin);
+
+  //     let deResults = await getAmazondotde(asin);
+
+  //     let itResults = await getAmazondotit(asin);
+
+  //     let plResults = await getAmazondotpl(asin);
+
+  //     let seResults = await getAmazondotse(asin);
+
+  //     let esResults = await getAmazondotes(asin);
+
+  //     let nlResults = await getAmazondotnl(asin);
+
+  //     ukResults[i] = {
+  //       ...ukResults[i],
+  //       amazondotfr: {
+  //         link: frResults ? frResults.link : "Not Availible",
+  //         price: frResults ? frResults.buybox_winner.price : "Not Availible",
+  //       },
+  //       amazondotde: {
+  //         link: deResults ? deResults.link : "Not Availible",
+  //         price: deResults ? deResults.buybox_winner.price : "Not Availible",
+  //       },
+  //       amazondotit: {
+  //         link: itResults ? itResults.link : "Not Availible",
+  //         price: itResults ? itResults.buybox_winner.price : "Not Availible",
+  //       },
+  //       amazondotpl: {
+  //         link: plResults ? plResults.link : "Not Availible",
+  //         price: plResults ? plResults.buybox_winner.price : "Not Availible",
+  //       },
+  //       amazondotse: {
+  //         link: seResults ? seResults.link : "Not Availible",
+  //         price: seResults ? seResults.buybox_winner.price : "Not Availible",
+  //       },
+  //       amazondotes: {
+  //         link: esResults ? esResults.link : "Not Availible",
+  //         price: esResults ? esResults.buybox_winner.price : "Not Availible",
+  //       },
+  //       amazondotnl: {
+  //         link: nlResults ? nlResults.link : "Not Availible",
+  //         price: nlResults ? nlResults.buybox_winner.price : "Not Availible",
+  //       },
+  //     };
+
+  //     console.log(ukResults);
+  //   });
+  // };
 
   const getAmazondotfr = async (asin) => {
     const params = {
@@ -226,9 +251,9 @@ const getSearch = async (data) => {
     if (res.data.request_info.success === true) {
       if (res.data.product.buybox_winner.price) {
         amazondotfr.push(res.data.product);
+        // return res.data.product;
       }
     }
-
     return amazondotfr;
   };
 
@@ -250,6 +275,7 @@ const getSearch = async (data) => {
     if (res.data.request_info.success === true) {
       if (res.data.product.buybox_winner.price) {
         amazondotde.push(res.data.product);
+        // return res.data.product;
       }
     }
 
@@ -275,6 +301,7 @@ const getSearch = async (data) => {
     if (res.data.request_info.success === true) {
       if (res.data.product.buybox_winner.price) {
         amazondotit.push(res.data.product);
+        // return res.data.product;
       }
     }
     return amazondotit;
@@ -298,11 +325,12 @@ const getSearch = async (data) => {
     console.log(res.data);
     if (res.data.request_info.success === true) {
       if (res.data.product.buybox_winner.price) {
-        amazondotpl.push(res.data.product);
+        // amazondotpl.push(res.data.product);
+        return res.data.product;
       }
     }
 
-    return amazondotpl;
+    // return amazondotpl;
   };
 
   const getAmazondotes = async (asin) => {
@@ -324,6 +352,7 @@ const getSearch = async (data) => {
     if (res.data.request_info.success === true) {
       if (res.data.product.buybox_winner.price) {
         amazondotes.push(res.data.product);
+        // return res.data.product;
       }
     }
 
@@ -348,10 +377,11 @@ const getSearch = async (data) => {
     console.log(res.data);
     if (res.data.request_info.success === true) {
       if (res.data.product.buybox_winner.price) {
-        amazondotse.push(res.data.product);
+        // amazondotse.push(res.data.product);
+        return res.data.product;
       }
     }
-    return amazondotse;
+    // return amazondotse;
   };
 
   const getAmazondotnl = async (asin) => {
@@ -372,10 +402,11 @@ const getSearch = async (data) => {
     console.log(res.data);
     if (res.data.request_info.success === true) {
       if (res.data.product.buybox_winner.price) {
-        amazondotnl.push(res.data.product);
+        // amazondotnl.push(res.data.product);
+        return res.data.product;
       }
     }
-    return amazondotnl;
+    // return amazondotnl;
   };
 
   let amazondotuk = await getAmazondotuk();

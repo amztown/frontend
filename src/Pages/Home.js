@@ -24,13 +24,9 @@ const Home = () => {
     const regions = [
       "amazon.de",
       "amazon.fr",
-      "amazon.se",
       "amazon.es",
-      "amazon.pl",
       "amazon.uk",
-      "amazon.nl",
       "amazon.it",
-      "amazon.pl",
     ];
 
     let i = 0;

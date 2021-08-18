@@ -6,7 +6,7 @@ import CurrencyConverter from "react-currency-conv";
 // const currencies  = require("currency-converter-lt");
 import Converter from "./Converter";
 
-const Card = ({ data, codes }) => {
+const Card = ({ data, codes, rate }) => {
   // let currencyConverter = new CC();
   return (
     <div class="card shadow rounded-lg">
@@ -20,7 +20,7 @@ const Card = ({ data, codes }) => {
         className="card-img-top p-3 img-fluid  "
         alt="..."
       />
-      {console.log(codes, "I am code")}
+      {console.log(Number(rate), "I am code")}
       <div class="card-body">
         <h4 style={{ fontWeight: "bold" }} class="card-title">
           {" "}
@@ -43,7 +43,7 @@ const Card = ({ data, codes }) => {
 
             <div className="col-6">
               {/* <Converter /> */}
-              {data.price?.value} {data.price?.currency}
+              {data.price?.value * Number(rate)} EUR
               {/* <CurrencyConverter from={"USD"} to={"CAD"} value={29} /> */}
               {/* {currencyConverter
                 .from("GBP")
