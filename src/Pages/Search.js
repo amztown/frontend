@@ -47,7 +47,7 @@ const Search = ({ location }) => {
 
     function yoo() {
       console.log(regions[i]);
-      setLoading(`Getting Results From ${i < 8 ? regions[i] : "amazon.pl"}`);
+      setLoading(`Getting Results From ${i < 4 ? regions[i] : "amazon.it"}`);
       console.log(i);
       i++;
     }
