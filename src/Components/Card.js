@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../Styles/Card.css";
 import ReactCountryFlag from "react-country-flag";
@@ -8,6 +8,13 @@ import Converter from "./Converter";
 
 const Card = ({ data, codes, rate }) => {
   // let currencyConverter = new CC();
+  const [price, setPrice] = useState(
+    (data.price?.value * Number(rate)).toString()
+  );
+
+  useEffect(() => {
+    setPrice((data.price?.value * Number(rate)).toString());
+  }, []);
   return (
     <div class="card shadow rounded-lg">
       <img
@@ -20,6 +27,7 @@ const Card = ({ data, codes, rate }) => {
         className="card-img-top p-3 img-fluid  "
         alt="..."
       />
+      {console.log(data.price?.value)}
       {console.log(data.price?.value * Number(rate), "I am code")}
       <div class="card-body">
         <h4 style={{ fontWeight: "bold" }} class="card-title">
@@ -42,17 +50,8 @@ const Card = ({ data, codes, rate }) => {
             </div>
 
             <div className="col-6">
-              {/* <Converter /> */}
-              {data.price?.value * Number(rate).toString().split(".")[0]} EUR
-              {/* <CurrencyConverter from={"USD"} to={"CAD"} value={29} /> */}
-              {/* {currencyConverter
-                .from("GBP")
-                .to("EUR")
-                .amount(data.price.value)
-                .convert()
-                .then((response) => {
-                  console.log(response, "hello response"); //or do something else
-                })} */}
+              {price?.split(".")[0]} EUR
+              {/* {data.price?.value * Number(rate).toString().split(".")[0]} EUR */}
             </div>
             <div className="col-3 text-center">
               <a

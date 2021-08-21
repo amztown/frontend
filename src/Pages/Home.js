@@ -39,13 +39,17 @@ const Home = () => {
     }
 
     let interval = setInterval(yoo, 5000);
-    let res = await getSearch({ searchValue: searchValue });
+    let res = await getSearch({ searchValue: searchValue, page: 1 });
     console.log(res);
     if (res) {
       clearInterval(interval);
       history.push({
         pathname: "/search",
-        state: { data: res.amazondotuk },
+        state: {
+          data: res.amazondotuk,
+          page: res.page,
+          searchValue: searchValue,
+        },
       });
     }
   };

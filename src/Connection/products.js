@@ -31,7 +31,8 @@ const getBestSellers = async () => {
 
 const getSearch = async (data) => {
   console.log(data);
-  const { searchValue } = data;
+  const { searchValue, page } = data;
+  console.log(page);
   let apiKey = await getApiKey();
 
   let asins = [];
@@ -64,6 +65,7 @@ const getSearch = async (data) => {
       amazon_domain: "amazon.co.uk",
       search_term: searchValue,
       sort_by: "price_high_to_low",
+      page: page,
     };
 
     let res = await axios.get("https://api.rainforestapi.com/request", {
@@ -72,13 +74,17 @@ const getSearch = async (data) => {
 
     console.log(res.data);
     res.data.search_results.map((res) => {
-      asins.push(res.asin);
+      if (res.price?.value) {
+        console.log("if is running");
+        asins.push(res.asin);
+      }
     });
+
+    console.log(asins, "we are asins");
 
     let frResults;
     let deResults, itResults, plResults, seResults, esResults, nlResults;
     let ukResults = res.data.search_results;
-    let newArr = [];
     let asinsLength = asins.length;
 
     let promises = asins.map(async (asin, i) => {
@@ -86,10 +92,9 @@ const getSearch = async (data) => {
       deResults = await getAmazondotde(asin);
       itResults = await getAmazondotit(asin);
       esResults = await getAmazondotes(asin);
-      // plResults = await getAmazondotpl(asin);
-      // seResults = await getAmazondotse(asin);
 
-      // nlResults = await getAmazondotnl(asin);
+      console.log("asins loop is running");
+
       if (asinsLength === i + 1) {
         console.log("i am running");
         res.data.search_results.map((prod, i) => {
@@ -410,10 +415,11 @@ const getSearch = async (data) => {
   };
 
   let amazondotuk = await getAmazondotuk();
-  console.log(amazondotuk, "amazondotuk values");
+  console.log(asins, "amazondotuk values");
 
   return {
     amazondotuk,
+    page: page,
   };
 };
 

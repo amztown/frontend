@@ -1,4 +1,5 @@
 import React from "react";
+import Logo from "../assets/images/Logo.png";
 
 const Footer = () => {
   return (
@@ -9,31 +10,32 @@ const Footer = () => {
       <div className="row h-100 ">
         <div className="col-6 col-md-3 d-flex justify-content-center align-items-center">
           <div>
+            {/* <h1>Lorum Ipsum</h1>
             <h1>Lorum Ipsum</h1>
-            <h1>Lorum Ipsum</h1>
-            <h1>Lorum Ipsum</h1>
+            <h1>Lorum Ipsum</h1> */}
+            <img className="img-fluid" style={{ height: "75px" }} src={Logo} />
           </div>
         </div>
         <div className="col-6 col-md-3 d-flex justify-content-center align-items-center">
-          <div>
+          {/* <div>
             <h1>Lorum Ipsum</h1>
             <h1>Lorum Ipsum</h1>
             <h1>Lorum Ipsum</h1>
-          </div>
+          </div> */}
         </div>
         <div className="col-6 col-md-3 d-flex justify-content-center align-items-center">
-          <div>
+          {/* <div>
             <h1>Lorum Ipsum</h1>
             <h1>Lorum Ipsum</h1>
             <h1>Lorum Ipsum</h1>
-          </div>
+          </div> */}
         </div>
         <div className="col-6 col-md-3 d-flex justify-content-center align-items-center">
           <div>
             <h1>
               <i
                 style={{
-                  fontSize: "31px"
+                  fontSize: "31px",
                 }}
                 class="fab fa-facebook-f m-2 "
               ></i>
@@ -41,7 +43,7 @@ const Footer = () => {
             <h1>
               <i
                 style={{
-                  fontSize: "31px"
+                  fontSize: "31px",
                 }}
                 class="fab fa-instagram m-2"
               ></i>

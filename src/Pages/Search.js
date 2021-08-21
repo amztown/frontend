@@ -7,15 +7,24 @@ import { useHistory } from "react-router-dom";
 import { getBestSellers, getSearch } from "../Connection/products";
 import { getCodes } from "../Connection/auth";
 import { useAuth } from "../Contexts/Auth-Context";
-
+import axios from "axios";
 import "../Styles/Search.css";
 
 const Search = ({ location }) => {
   const [searchValue, setSearchValue] = useState("");
-  const [results, setResults] = useState("");
+  const [results, setResults] = useState();
   const history = useHistory();
   const [loading, setLoading] = useState("Search");
   const { gbpRate } = useAuth();
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [page, setPage] = useState();
+
+  const handlePage = async () => {
+    let res = await axios.get(
+      "https://www.amazon.co.uk/s?k=sneakers&s=price-desc-rank&page=2&qid=1629537910&ref=sr_pg_2"
+    );
+    console.log(res);
+  };
 
   const handleSearchValueChange = async (evt) => {
     console.log(evt.target.value);
@@ -53,15 +62,63 @@ const Search = ({ location }) => {
     }
 
     let interval = setInterval(yoo, 5000);
-    let res = await getSearch({ searchValue: searchValue });
+    let res = await getSearch({
+      searchValue: searchValue,
+      page: 1,
+    });
     console.log(res);
     if (res) {
       clearInterval(interval);
       history.push({
         pathname: "/search",
-        state: { data: res.amazondotuk },
+        state: {
+          data: res.amazondotuk,
+          page: res.page,
+          searchValue: searchValue,
+        },
       });
       setLoading("search");
+    }
+  };
+
+  const handleLoadMore = async (evt) => {
+    setLoadingMore(true);
+    evt.preventDefault();
+    console.log(searchValue);
+    console.log(page);
+
+    const regions = [
+      "amazon.de",
+      "amazon.fr",
+      "amazon.es",
+      "amazon.uk",
+      "amazon.it",
+    ];
+
+    let i = 0;
+
+    function yoo() {
+      console.log(regions[i]);
+      setLoading(`Getting Results From ${i < 4 ? regions[i] : "amazon.it"}`);
+      console.log(i);
+      i++;
+    }
+
+    let interval = setInterval(yoo, 5000);
+    let res = await getSearch({ searchValue: searchValue, page: page + 1 });
+    console.log(res);
+    if (res) {
+      clearInterval(interval);
+      history.push({
+        pathname: "/search",
+        state: {
+          data: res.amazondotuk,
+          page: res.page,
+          searchValue: searchValue,
+        },
+      });
+      setLoading("search");
+      setLoadingMore(false);
     }
   };
 
@@ -69,6 +126,9 @@ const Search = ({ location }) => {
 
   useEffect(() => {
     setResults(location.state.data);
+    setPage(location.state.page);
+    setSearchValue(location.state.searchValue);
+    window.scrollTo(0, 0);
   }, [location.state.data]);
 
   useEffect(() => {
@@ -130,6 +190,7 @@ const Search = ({ location }) => {
                 >
                   {loading}
                 </button>
+                {/* <button onClick={handlePage}>Get page 2</button> */}
               </div>
             </form>
           </div>
@@ -159,17 +220,39 @@ const Search = ({ location }) => {
           <div className="row">
             {results.map((result) => {
               return (
-                <div className="col-12 col-md-6 col-lg-4 col-xl-3 text-center mb-5">
-                  <Card
-                    data={result}
-                    codes={codes}
-                    rate={gbpRate.toString().slice(0, 4)}
-                  />
-                </div>
+                <>
+                  {" "}
+                  {(result.price ||
+                    result.amazondotfr?.price ||
+                    result.amazondotde?.price ||
+                    result.amazondotes?.price ||
+                    result.amazondotit?.price) && (
+                    <div className="col-12 col-md-6 col-lg-4 col-xl-3 text-center mb-5">
+                      <Card
+                        data={result}
+                        codes={codes}
+                        rate={gbpRate.toString().slice(0, 4)}
+                      />
+                    </div>
+                  )}
+                </>
               );
             })}
           </div>
         )}
+        <button
+          type="submit"
+          style={{
+            backgroundColor: "#6DC9B4",
+            width: "150px",
+            height: "55px",
+            color: "white",
+          }}
+          className="rounded px-2"
+          onClick={handleLoadMore}
+        >
+          {loadingMore ? loading : "Load More"}
+        </button>
       </div>
     </div>
   );
